@@ -1,0 +1,45 @@
+using G
+using Gtk;
+        
+        public class AgentWindow : Window {
+        private Label load_label;
+        private Label state_label;
+        private TextView artifact_view;
+        
+        public AgentWindow() {
+        this.title = "AI Agent Monitor";
+        this.set_default_size(400, 300);
+        this.destroy.connect(Gtk.main_quit);
+        
+        var vbox = new Box(Orientation.VERTICAL, 5);
+        this.add(vbox);
+        
+        load_label = new Label("Load: Checking...");
+        vbox.pack_start(load_label, false, false, 0);
+        
+        state_label = new Label("State: Studying");
+        vbox.pack_start(state_label, false, false, 0);
+        
+        artifact_view = new TextView();
+        artifact_view.editable = false;
+        var scrolled = new ScrolledWindow(null, null);
+        scrolled.add(artifact_view);
+        vbox.pack_start(scrolled, true, true, 0);
+        
+        // Simulate loop (replace with real logic)
+        Timeout.add(2000, () => {
+        // Sense load (dummy)
+        load_label.set_text("Load: 0.75");
+        state_label.set_text("State: Thinking");
+        artifact_view.buffer.text += "New artifact published.\n";
+        return true;  // Continue looping
+        });
+        }
+        }
+        
+        void main(string[] args) {
+        Gtk.init(ref args);
+        var window = new AgentWindow();
+        window.show_all();
+        Gtk.main();
+        }

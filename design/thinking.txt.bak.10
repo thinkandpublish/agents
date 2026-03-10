@@ -1,0 +1,48 @@
+# AI Agent Thinking.
+- has a agent loop like REPL but different, not for interactive but for solitude actions.
+- A loop like sense, solve, go; like in the WAYMO self driving car.
+- an agent has a purpose, stated as a why it exists.
+- an agent has a work ethic that is stated for it.
+- an agent has a limited reprogram method.
+- an agent could be like SAR robots in kill command, as Vanessa, explained study, analyze, reprogram; I would add operate and loop
+  unless operate is a part of study. Maybe study is the operate. Analyze is the response to need to correct. 
+  Reprogram is the response to need to change.
+- Study, as the operation of the Agent, recognizes that it needs to study what is happening and act accordingly. When
+  study discovers an anomoly, a need for correction arises and it will shift to analyze.
+- On the other hand, perhaps study is an agent, analyze is an agent, and reprogram is an agent. With three agents
+  a meta agent that choses between them could also be part of it. 
+- A study agent has the job of study the problem.
+- An analyze agent has the job of analyze an incorrection or maybe imperfection.
+- A reprogram agent has the job of correcting the system.
+- A system has to be designed; a system is a set of elements. Elements have behavior.   
+## Protypical Design
+- The system exists because elements have the purpose of thinking and publishing or supporting that.
+- Why the agent, an element in a system, exists; is to think and publish or support thinking and publishing.
+- The highest action is to think and publish, to leave an artifact in the world.
+### The system artifact
+- www.github.com/refgift is my place for publishing artifacts from my thinking and publishing, feed and led.
+- a system of thinking and publishing agents to create an artifact on github for others to benefit from is a good
+  start because it what I do and I can participate because it is what I am. God is in the image of Man. 
+  I think and publish therefore I am.
+- A limiting factor is to never send the system performance past a load average of 1.00. 
+  this can be assessed with the uptime command. A test would to be running the agent system 
+  and periodically run uptime assess the load average, if above 1 then agent system would
+  yield and wait for favorable conditions, load average of 0.80 or lower.
+## Practical considerations
+- I created a github community called thinkandpublish. 
+- it is at github.com/thinkandpublish and I invited 1 account to join.
+- It is a place that where the agents can make repositories for their artifact placements
+  and make it public and earn stars and other achievements, like my "Quickdraw" achievement
+  on my github.com/refgift 
+## Implementation
+- K.I.S.S. = Keep it simple, stupid; an engineering rule derived from Occam's razor.
+- I prefer a C language implementation cause that is my strong thing. 
+- However, Vala can create beautiful graphic apps that utilize the best of Linux.
+- I can read Vala code well enough. I have yet to learn how to program it, maybe
+  one of the AI programs can do a Vala version with a graphic instead of text
+  view. Something to think about.
+- The feed utility must be integrate for accessd to grok-code-fast, the current setup.
+  The agents can send an argument on the feed command line and read the output with a
+  pipe or redirect the output into a file and read the file to get grok advice.
+- What to give to grok would be a listing of the directory and maybe a diffent directive
+  like
