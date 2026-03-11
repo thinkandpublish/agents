@@ -34,6 +34,8 @@
 - It is a place that where the agents can make repositories for their artifact placements
   and make it public and earn stars and other achievements, like my "Quickdraw" achievement
   on my github.com/refgift 
+- The first repository for this project of agents is https://www.github.com/thinkandpublish/agents.gif
+  the main branch name is master.
 ## Implementation
 - K.I.S.S. = Keep it simple, stupid; an engineering rule derived from Occam's razor.
 - I prefer a C language implementation cause that is my strong thing. 
@@ -45,3 +47,4 @@
   The agents can send an argument on the feed command line and read the output with a
   pipe or redirect the output into a file and read the file to get grok advice.
 - What to give to grok would be a listing of the directory and maybe a diffent directive.
+- I also expect that we work on until we use gork to perform the reprogram.

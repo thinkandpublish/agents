@@ -1,64 +1,97 @@
- #include <stdio.h>
+#include <stdio.h>
         #include <stdlib.h>
-        #include <unistd.h>
         #include <string.h>
-        #include <sys/wait.h>
+        #include <unistd.h>
+        #include <time.h>
         
-        // Purpose: Think and publish artifacts to support human thinking.
-        // Work Ethic: Stay under load 1.00; prioritize accuracy.
+        #define REPO_DIR "thinkandpublish"  // Replace with your local agents.git clone
+        #define LOAD_THRESHOLD_HIGH 1.00
+        #define LOAD_THRESHOLD_LOW 0.80
+        #define SLEEP_SECONDS 5  // Yield time if overloaded
         
-        #define LOAD_THRESHOLD 1.00
-        #define REST_LOAD 0.80
-        
+        // Function to get load average from uptime
         double get_load_average() {
-        FILE *fp = popen("uptime | awk -F'load average:' '{ print $2 }' | cut  -d',' -f1", "r");
-        if (!fp) return -1;
-        double load;
-        fscanf(fp, "%lf", &load);
+	double load;
+        FILE *fp = popen("uptime", "r");
+        if (!fp) return -1.0;
+        char buffer[256];
+        fgets(buffer, sizeof(buffer), fp);
         pclose(fp);
+        
+        // Parse output (e.g., "load average: 0.50, 0.40, 0.30" -> extract first number)
+        char *load_str = strstr(buffer, "load average:");
+        if (load_str) {
+        sscanf(load_str + 14, "%lf", &load);  // Adjust based on uptime format
         return load;
         }
-        
-        void sense() {
-        printf("Sensing: Scanning directory...\n");
-        system("ls -la > dir_listing.txt");
-        system("feed 'Make a README.md: ' < dir_listing.txt > README.md");
+        return -1.0;
         }
         
-        void solve() {
-        printf("Solving: Analyzing for anomalies...\n");
-        // Simple anomaly: Check if load > threshold
+        // Study Agent: Sense and monitor
+        void study_agent() {
+        printf("Study: Sensing environment...\n");
+        // Example: List directory contents (as input for Grok)
+        system("ls -la " REPO_DIR " > directory_listing.txt");
+        // Check for anomalies (e.g., if listing changed)
+        // For simplicity, always trigger analyze if load is normal
+        }
+        
+        // Analyze Agent: Solve/evaluate
+        int analyze_agent() {
+        printf("Analyze: Evaluating for corrections...\n");
         double load = get_load_average();
-        if (load > LOAD_THRESHOLD) {
-        printf("Anomaly detected: High load (%.2f). Switching to Analyze.\n", 
-        load);
-        // Analyze: Suggest wait
-        printf("Analysis: Yield until load <= %.2f\n", REST_LOAD);
-        // Reprogram: Wait
-        while (load > REST_LOAD) {
-        sleep(10);
-        load = get_load_average();
+        if (load > LOAD_THRESHOLD_HIGH) {
+        printf("Anomaly: Load too high (%.2f). Yielding.\n", load);
+        return 0;  // No action, yield
         }
-        printf("Reprogrammed: Load normalized.\n");
-        } else {
-        printf("No anomalies. Proceeding to Go.\n");
+        // Feed Grok for analysis (e.g., "analyze this directory for new artifact ideas")
+        system("feed 'Analyze directory_listing.txt for anomalies or new thinking topics' > grok_analysis.txt");
+        
+        // Parse grok_analysis.txt (simple: if contains "reprogram", trigger reprogram)
+        FILE *fp = fopen("grok_analysis.txt", "r");
+        if (fp) {
+        char line[256];
+        while (fgets(line, sizeof(line), fp)) {
+        if (strstr(line, "reprogram")) {
+        fclose(fp);
+        return 1;  // Trigger reprogram
         }
+        }
+        fclose(fp);
+        }
+        return 0;  // No reprogram needed
         }
         
-        void go() {
-        printf("Going: Publishing artifact...\n");
-        // Example: Commit to Git
-        system("git add . && git commit -m 'Agent artifact' && git push");
-        printf("Artifact published.\n");
+        // Reprogram Agent: Go/execute
+        void reprogram_agent() {
+        printf("Reprogram: Applying changes...\n");
+        // Feed Grok for reprogramming (e.g., "generate a new artifact based on analysis")
+        system("feed 'Reprogram: Create a new code snippet or report based on grok_analysis.txt' > new_artifact.txt");
+        
+        // Publish artifact to GitHub
+        system("cp new_artifact.txt " REPO_DIR "/artifact_" + (char*)time(NULL) + ".txt");  // Timestamped file
+        system("cd " REPO_DIR " && git add . && git commit -m 'Agent-generated artifact' && git push");
+        printf("Artifact published to GitHub.\n");
         }
         
+        // Main loop (Meta-Agent overseer)
         int main() {
-        printf("Agent initialized. Purpose: Think and publish.\n");
         while (1) {
-        sense();
-        solve();
-        go();
-        sleep(60); // Loop interval; adjust as needed
+        double load = get_load_average();
+        if (load > LOAD_THRESHOLD_HIGH) {
+        printf("Overloaded (%.2f). Sleeping...\n", load);
+        sleep(SLEEP_SECONDS);
+        continue;
+        }
+        
+        study_agent();  // Always sense
+        
+        if (analyze_agent()) {  // If analysis triggers reprogram
+        reprogram_agent();
+        }
+        
+        sleep(10);  // Loop delay (adjust for performance)
         }
         return 0;
         }
+
